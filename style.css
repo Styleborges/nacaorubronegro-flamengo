@@ -1,165 +1,49 @@
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* BODY */
 body {
     font-family: 'Arial', sans-serif;
-    background: #000000;
+    background: #000;
     color: #fff;
-    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
-/* LOGO HEADER */
-header {
-    text-align: center;
-    padding: 2rem;
-    background: linear-gradient(90deg, #000, #0b0b0b);
-}
-
+/* Header & Logo */
+header { text-align:center; padding:2rem; }
 .logo {
-    font-size: 4rem;
-    font-weight: 900;
-    color: gold;
-    text-shadow: 0 0 15px gold, 0 0 30px purple, 0 0 50px gold;
+    font-size:4rem; font-weight:900; color:gold;
+    text-shadow:0 0 15px gold,0 0 30px purple;
     animation: glow 2s infinite alternate;
 }
+@keyframes glow { 0%{text-shadow:0 0 5px gold,0 0 10px purple} 100%{text-shadow:0 0 15px gold,0 0 30px purple} }
 
-@keyframes glow {
-    0% { text-shadow: 0 0 5px gold, 0 0 10px purple, 0 0 20px gold; }
-    100% { text-shadow: 0 0 15px gold, 0 0 30px purple, 0 0 50px gold; }
-}
-
-/* MENU */
-.menu {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 1.5rem 0;
-}
-
+/* Menu */
+.menu { display:flex; justify-content:center; gap:2rem; margin:1rem 0; }
 .menu-item {
-    padding: 1rem 2rem;
-    border: 2px solid #6a0dad;
-    border-radius: 12px;
-    text-decoration: none;
-    color: gold;
-    background: rgba(20,0,40,0.2);
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px #6a0dad;
+    padding:1rem 2rem; border:2px solid #6a0dad; border-radius:12px;
+    text-decoration:none; color:gold; font-weight:bold;
+    transition:0.3s; box-shadow:0 0 10px #6a0dad;
 }
+.menu-item:hover { transform:translateY(-5px); background:linear-gradient(90deg,gold,purple); color:#000; box-shadow:0 0 20px gold,0 0 40px purple; }
 
-.menu-item:hover {
-    transform: translateY(-5px);
-    background: linear-gradient(90deg, gold, purple);
-    color: #000;
-    box-shadow: 0 0 20px gold, 0 0 40px purple;
-}
-
-.discord {
-    border-color: gold;
-}
-
-/* LOJA */
-.loja {
-    text-align: center;
-    padding: 3rem 2rem;
-}
-
-.loja h2 {
-    color: gold;
-    margin-bottom: 2rem;
-    text-shadow: 0 0 10px gold;
-}
-
-/* CARDS FLUTUANTES */
-.cards {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
-}
-
+/* Loja & Cards */
+.loja, .compra { text-align:center; padding:2rem; }
+.loja h2, .compra h2 { color:gold; margin-bottom:2rem; }
+.cards { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; }
 .card {
-    background: linear-gradient(145deg, #1a1a1a, #2c2c2c);
-    border: 2px solid purple;
-    padding: 2rem;
-    width: 250px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
-    box-shadow: 0 0 15px #6a0dad;
+    background:linear-gradient(145deg,#111,#222); border:2px solid purple; padding:2rem;
+    width:250px; border-radius:15px; cursor:pointer; transition:0.3s;
+    box-shadow:0 0 15px #6a0dad;
 }
+.card:hover { transform:translateY(-15px) scale(1.05); box-shadow:0 0 30px gold,0 0 50px purple; border:2px solid gold; }
+.card h3 { color:gold; margin-bottom:0.5rem; }
 
-.card:hover {
-    transform: translateY(-15px) scale(1.05);
-    box-shadow: 0 0 30px gold, 0 0 50px purple;
-    border: 2px solid gold;
+/* Botão Comprar */
+.btn-comprar {
+    display:inline-block; margin-top:1rem; padding:0.5rem 1rem;
+    background:gold; color:#000; text-decoration:none; font-weight:bold; border-radius:8px;
+    transition:0.3s;
 }
+.btn-comprar:hover { background:purple; color:gold; }
 
-.card h3 {
-    color: gold;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 0 10px gold;
-}
-
-/* PRODUTOS */
-.produtos-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-}
-
-.produto {
-    background: linear-gradient(145deg, #111, #1a1a1a);
-    border: 2px solid purple;
-    padding: 1.5rem;
-    width: 220px;
-    border-radius: 15px;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 10px purple;
-}
-
-.produto:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 20px gold, 0 0 40px purple;
-    border: 2px solid gold;
-}
-
-.produto h4 {
-    color: gold;
-    margin-bottom: 0.5rem;
-}
-
-.produto button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    background: gold;
-    color: #000;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.produto button:hover {
-    background: purple;
-    color: gold;
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 2rem;
-    color: gold;
-    border-top: 1px solid purple;
-    margin-top: 3rem;
-}
+/* PIX & Código */
+.produto-info, .codigo-container { margin-top:2rem; }
+.codigo-container code, .produto-info code { background:#111; padding:0.5rem 1rem; border-radius:8px; display:inline-block; margin:1rem 0; color:gold; font-weight:bold; }
