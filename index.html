@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Roblox - Black & Roxo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Loja Roblox</div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>Bem-vindo à Loja Roblox</h1>
+        <p>Os melhores itens e contas para Roblox!</p>
+        <button onclick="scrollToProducts()">Ver Produtos</button>
+    </section>
+
+    <section id="produtos" class="produtos">
+        <h2>Nossos Produtos</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>Robux 100</h3>
+                <p>Preço: R$4,80</p>
+                <button>Comprar</button>
+            </div>
+            <div class="card">
+                <h3>Robux 200</h3>
+                <p>Preço: R$9,60</p>
+                <button>Comprar</button>
+            </div>
+            <div class="card">
+                <h3>Conta Blox Fruits</h3>
+                <p>Conta pronta para jogar!</p>
+                <button>Comprar</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="contato">
+        <h2>Contato</h2>
+        <form id="contatoForm">
+            <input type="text" placeholder="Seu nome" required>
+            <input type="email" placeholder="Seu email" required>
+            <textarea placeholder="Mensagem" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Loja Roblox. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
