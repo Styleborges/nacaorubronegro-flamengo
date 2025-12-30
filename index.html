@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDR STORE - Trocação de Tiro no RJ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ESTILO GERAL (TDR VIBE) --- */
+        :root {
+            --primary: #00ff88; /* Verde Neon */
+            --discord: #5865F2; /* Azul Discord */
+            --bg-dark: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.95);
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #000;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 { text-transform: uppercase; letter-spacing: 2px; margin: 0; }
+        
+        button {
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        /* --- TELA DE LOGIN --- */
+        #login-screen {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: url('https://i.imgur.com/3M34hi2.png') no-repeat center center; 
+            background-size: cover;
+        }
+
+        /* Overlay escuro no login */
+        #login-screen::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: -1;
+        }
+
+        .login-box {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+            width: 90%;
+            max-width: 400px;
+            backdrop-filter: blur(5px);
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            background: #111;
+            border: 1px solid #444;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            box-sizing: border-box; 
+            outline: none;
+        }
+        .login-input:focus { border-color: var(--primary); }
+
+        .btn-start {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            border: none;
+            color: #000;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            font-weight: 800;
+        }
+        .btn-start:hover { transform: scale(1.02); box-shadow: 0 0 15px var(--primary); }
+
+        /* --- DASHBOARD (LOJA) --- */
+        #dashboard { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo h2 { font-size: 2rem; }
+        
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+
+        .btn-discord {
+            background-color: var(--discord);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-discord:hover { background-color: #4752c4; }
+
+        .btn-logout { background: #dc3545; border: none; padding: 10px 15px; color: white; border-radius: 5px; }
+
+        /* Títulos das Seções */
+        .section-title {
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+            margin: 40px 0 20px 0;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            width: 260px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,255,136,0.1); }
+
+        .card h3 { color: #fff; font-size: 1.2rem; }
+        .card p { color: #888; font-size: 0.9rem; margin: 5px 0; }
+
+        .price-tag {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(0,255,136,0.2);
+        }
+
+        .btn-buy {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        .btn-buy:hover { background: var(--primary); color: #000; }
+
+        /* Cores Especiais para Dinheiro */
+        .money-card .price-tag { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        .money-card .btn-buy { border-color: #ffd700; color: #ffd700; }
+        .money-card .btn-buy:hover { background: #ffd700; color: #000; }
+        .money-card:hover { border-color: #ffd700; }
+
+        /* --- HISTÓRICO --- */
+        #history-section { margin-top: 60px; background: #111; padding: 20px; border-radius: 10px; border: 1px solid #333; }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            background: #1a1a1a;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--discord);
+            align-items: center;
+        }
+        .history-token { font-family: monospace; color: #aaa; background: #000; padding: 5px; border-radius: 4px; }
+
+        /* --- MODAL PIX --- */
+        #pix-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: #151515;
+            padding: 30px;
+            border: 1px solid var(--primary);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .pix-key {
+            background: #000;
+            padding: 15px;
+            color: var(--primary);
+            border: 1px dashed #555;
+            word-break: break-all;
+            margin: 20px 0;
+            font-family: monospace;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-confirm { background: var(--primary); color: black; border: none; padding: 15px 30px; width: 100%; font-size: 1.1rem; font-weight: bold; border-radius: 5px; }
+        .btn-confirm:hover { background: #00cc6a; }
+        
+        .btn-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 2rem; }
+
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h1 style="color:white; margin-bottom: 5px;">TDR <span style="color:var(--primary)">STORE</span></h1>
+            <p style="color: #888; margin-top:0;">TROCAÇÃO DE TIRO NO RJ</p>
+            
+            <input type="text" id="discordInput" class="login-input" placeholder="DIGITE SEU NICK DO DISCORD">
+            <button class="btn-start" onclick="fazerLogin()">ENTRAR NO SISTEMA</button>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <header>
+            <div class="logo">
+                <h2>TDR <span style="color:var(--primary)">STORE</span></h2>
+            </div>
+            
+            <div class="header-actions">
+                <a href="https://discord.gg/CzkVtuFhUE" target="_blank" class="btn-discord">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.5328-9.7135-3.5686-13.641a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/></svg>
+                    COMUNIDADE
+                </a>
+
+                <div style="text-align: right;">
+                    <span style="display:block; font-size: 0.8rem; color:#888;">LOGADO COMO:</span>
+                    <span id="userNameDisplay" style="color:var(--primary); font-weight: bold; font-size: 1.1rem;"></span>
+                </div>
+                <button class="btn-logout" onclick="fazerLogout()">X</button>
+            </div>
+        </header>
+
+        <h2 class="section-title">ARSENAL EXCLUSIVO</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>AK-47 ISRAEL</h3>
+                <p>Compacta e Letal</p>
+                <div class="price-tag">R$ 8,00</div>
+                <button class="btn-buy" onclick="abrirModal('AK-47 Israel', 8.00)">COMPRAR</button>
+            </div>
+            <div class="card">
+                <h3>AK PRATA</h3>
+                <p>Skin Cromada de Luxo</p>
+                <div class="price-tag">R$ 11,00</div>
+                <button class="btn-buy" onclick="abrirModal('AK Prata', 11.00)">COMPRAR</button>
+            </div>
+            <div class="card">
+                <h3>MCX TÁTICA</h3>
+                <p>Mira Holográfica + Silenciador</p>
+                <div class="price-tag">R$ 16,00</div>
+                <button class="btn-buy" onclick="abrirModal('MCX Tática', 16.00)">COMPRAR</button>
+            </div>
+            <div class="card">
+                <h3>FAL GOLD</h3>
+                <p>O Poder Dourado (Dano Alto)</p>
+                <div class="price-tag">R$ 23,00</div>
+                <button class="btn-buy" onclick="abrirModal('FAL Gold', 23.00)">COMPRAR</button>
+            </div>
+        </div>
+
+        <h2 class="section-title" style="border-color: #ffd700; margin-top: 60px;">BANCO TDR (DINHEIRO)</h2>
+        <div class="grid">
+            <div class="card money-card">
+                <h3>25.000</h3>
+                <p>Dinheiro Limpo</p>
+                <div class="price-tag">R$ 14,00</div>
+                <button class="btn-buy" onclick="abrirModal('25k Dinheiro', 14.00)">COMPRAR</button>
+            </div>
+            <div class="card money-card">
+                <h3>50.000</h3>
+                <p>Mala de Dinheiro</p>
+                <div class="price-tag">R$ 38,00</div>
+                <button class="btn-buy" onclick="abrirModal('50k Dinheiro', 38.00)">COMPRAR</button>
+            </div>
+            <div class="card money-card">
+                <h3>80.000</h3>
+                <p>Caixa Forte</p>
+                <div class="price-tag">R$ 53,00</div>
+                <button class="btn-buy" onclick="abrirModal('80k Dinheiro', 53.00)">COMPRAR</button>
+            </div>
+            <div class="card money-card">
+                <h3>100.000</h3>
+                <p>Vida de Patrão</p>
+                <div class="price-tag">R$ 75,00</div>
+                <button class="btn-buy" onclick="abrirModal('100k Dinheiro', 75.00)">COMPRAR</button>
+            </div>
+        </div>
+
+        <div id="history-section">
+            <h3 style="margin-bottom:15px; color: #fff;">MEUS PEDIDOS (SALVOS)</h3>
+            <div id="history-list">
+                </div>
+        </div>
+    </div>
+
+    <div id="pix-modal">
+        <div class="modal-content">
+            <button class="btn-close" onclick="fecharModal()">×</button>
+            <h2 style="color:white;">PAGAMENTO PIX</h2>
+            <p>Item: <span id="modal-produto" style="color:var(--primary); font-weight: bold;"></span></p>
+            <p>Valor: <span id="modal-valor" style="color:white; font-weight: bold;"></span></p>
+            
+            <p style="font-size: 0.9rem; color:#aaa;">Copie a chave abaixo:</p>
+            <div class="pix-key" onclick="copiarPix()">
+                39505f23-b744-44d1-a8d8-1d1b456b2504
+            </div>
+
+            <button class="btn-confirm" id="btnConfirmar" onclick="confirmarPagamento()">JÁ FIZ O PAGAMENTO</button>
+            
+            <div id="result-area" style="display:none; margin-top:20px;">
+                <p style="color: #00ff88; font-size: 1.2rem;">✅ Pagamento Enviado!</p>
+                <div style="background:#222; padding:15px; margin: 10px 0; border: 1px solid #444;">
+                    <span style="display:block; font-size: 0.8rem; color:#888;">SEU TOKEN DE RESGATE:</span>
+                    <span id="token-final" style="color: white; font-weight: bold; font-size: 1.2rem; letter-spacing: 2px;"></span>
+                </div>
+                <p style="font-size:12px; color: #ccc;">Tire print dessa tela e abra um ticket no Discord.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SUA WEBHOOK ---
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1455701150232744160/KMjlr0_hErGYRrgN5AMKa2KSXluZHm_fZW8WWZE9PN3YvtBepZWuQ-ACvCQsE_bN6Na6";
+
+        let currentUser = null;
+        let selectedProduct = null;
+        let selectedPrice = 0;
+        let userHistory = [];
+
+        // 1. CARREGAR SAVE DATA AO INICIAR
+        window.onload = function() {
+            const savedData = localStorage.getItem('tdr_save_data_v2');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if (data.nick) {
+                    document.getElementById('discordInput').value = data.nick;
+                    fazerLogin();
+                }
+            }
+        };
+
+        // 2. SISTEMA DE LOGIN
+        function fazerLogin() {
+            const nick = document.getElementById('discordInput').value.trim();
+            if (!nick) return alert("Ei! Digite seu nick do Discord pra continuar.");
+
+            currentUser = nick;
+            
+            const savedData = localStorage.getItem('tdr_save_data_v2');
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                if (parsed.nick === currentUser) {
+                    userHistory = parsed.history || [];
+                } else {
+                    userHistory = [];
+                }
+            }
+
+            document.getElementById('userNameDisplay').innerText = currentUser;
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            atualizarHistoricoNaTela();
+        }
+
+        function fazerLogout() {
+            location.reload();
+        }
+
+        // 3. FUNÇÕES DA LOJA
+        function abrirModal(produto, preco) {
+            selectedProduct = produto;
+            selectedPrice = preco;
+            document.getElementById('modal-produto').innerText = produto;
+            document.getElementById('modal-valor').innerText = "R$ " + preco.toFixed(2);
+            document.getElementById('pix-modal').style.display = 'flex';
+            
+            document.getElementById('btnConfirmar').style.display = 'block';
+            document.getElementById('result-area').style.display = 'none';
+        }
+
+        function fecharModal() {
+            document.getElementById('pix-modal').style.display = 'none';
+        }
+
+        function copiarPix() {
+            navigator.clipboard.writeText("39505f23-b744-44d1-a8d8-1d1b456b2504");
+            alert("Chave PIX copiada!");
+        }
+
+        function gerarToken() {
+            const chars = "ABCDEF0123456789";
+            let part1 = ""; let part2 = "";
+            for(let i=0; i<4; i++) { part1 += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            for(let i=0; i<4; i++) { part2 += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            return `TDR-${part1}-${part2}`;
+        }
+
+        // 4. CONFIRMAR E SALVAR
+        function confirmarPagamento() {
+            const token = gerarToken();
+            const dataHora = new Date().toLocaleString('pt-BR');
+
+            document.getElementById('btnConfirmar').style.display = 'none';
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('token-final').innerText = token;
+
+            userHistory.push({ item: selectedProduct, token: token, data: dataHora });
+            
+            const dataToSave = {
+                nick: currentUser,
+                history: userHistory
+            };
+            localStorage.setItem('tdr_save_data_v2', JSON.stringify(dataToSave));
+            
+            atualizarHistoricoNaTela();
+
+            enviarLogDiscord(token, dataHora);
+        }
+
+        function atualizarHistoricoNaTela() {
+            const lista = document.getElementById('history-list');
+            lista.innerHTML = "";
+            
+            if (userHistory.length === 0) {
+                lista.innerHTML = '<p style="color:#555; font-style:italic;">Nenhuma compra registrada neste PC.</p>';
+                return;
+            }
+
+            userHistory.slice().reverse().forEach(compra => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <div>
+                        <strong style="color:white; display:block;">${compra.item}</strong>
+                        <small style="color:#777;">${compra.data}</small>
+                    </div>
+                    <span class="history-token">${compra.token}</span>
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        function enviarLogDiscord(token, dataHora) {
+            const payload = {
+                content: "💰 **NOVA VENDA NO SITE TDR!**",
+                username: "TDR BOT",
+                avatar_url: "https://i.imgur.com/3M34hi2.png",
+                embeds: [
+                    {
+                        title: "Confirmar Pagamento PIX",
+                        color: 5763719, // Verde Matrix
+                        fields: [
+                            { name: "👤 Jogador", value: currentUser, inline: true },
+                            { name: "📦 Produto", value: selectedProduct, inline: true },
+                            { name: "💲 Valor", value: `R$ ${selectedPrice.toFixed(2)}`, inline: true },
+                            { name: "🔑 Token Gerado", value: `\`${token}\``, inline: false },
+                            { name: "📅 Data/Hora", value: dataHora, inline: false }
+                        ],
+                        footer: { text: "TDR Store - Sistema Automático" }
+                    }
+                ]
+            };
+
+            fetch(WEBHOOK_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).then(() => console.log("Enviado!"))
+              .catch(err => console.error("Erro webhook", err));
+        }
+    </script>
+</body>
+</html>
